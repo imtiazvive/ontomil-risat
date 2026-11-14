@@ -228,7 +228,7 @@ export default function Home() {
     <main>
       <div className="announcement">
         <span>বই হোক নিত্যসঙ্গী</span>
-        <span className="announcement-separator">✳</span>
+        <span className="announcement-separator">·</span>
         <span>হোয়াটসঅ্যাপে সহজে অর্ডার</span>
       </div>
 
@@ -273,11 +273,12 @@ export default function Home() {
             পছন্দের বই খুঁজুন <span aria-hidden="true">↗</span>
           </a>
           <div className="hero-note">
-            <span className="note-star">✳</span>
+            <span className="note-star">❧</span>
             <span>যত্ন করে বাছাই।<br /><strong>আপনার জন্যই।</strong></span>
           </div>
         </div>
         <div className="hero-art" role="img" aria-label="উষ্ণ আলোয় সাজানো শান্ত একটি পাঠাগার">
+          <span className="hero-handwritten">পাতা ওল্টান,<br />মন খুলে যাবে</span>
           <div className="hero-art-label">
             <span>বইয়ের পাতায়</span>
             <strong>হারিয়ে যাওয়ার<br />আনন্দই আলাদা।</strong>
@@ -329,8 +330,8 @@ export default function Home() {
 
         {visibleBooks.length ? (
           <div className="book-grid">
-            {visibleBooks.map((book) => (
-              <article className="book-card" key={book.id}>
+            {visibleBooks.map((book, index) => (
+              <article className="book-card" key={book.id} style={{ "--card-index": index }}>
                 <div className="book-art-wrap">
                   <Link className="preview-cover-link" href={`/read/${book.id}`} aria-label={`${book.title} নমুনা পড়ুন`}>
                     <BookCover book={book} />
@@ -365,7 +366,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="empty-results">
-            <span>✳</span>
+            <span>❧</span>
             <h3>এই নামে কোনো বই পাওয়া যায়নি।</h3>
             <p>অন্য নাম, লেখক বা বিভাগ দিয়ে খুঁজে দেখুন।</p>
             <button type="button" onClick={() => { setSearch(""); setActiveCategory("সব বই"); }}>
@@ -409,7 +410,7 @@ export default function Home() {
           হোয়াটসঅ্যাপে কথা বলুন
           <span aria-hidden="true">↗</span>
         </button>
-        <span className="contact-doodle" aria-hidden="true">✳</span>
+        <span className="contact-doodle" aria-hidden="true">❧</span>
       </section>
 
       <footer className="site-footer">
@@ -419,6 +420,19 @@ export default function Home() {
         </a>
         <span className="footer-note">বইয়ের প্রতি ভালোবাসায় তৈরি। © {formatNumber(new Date().getFullYear())}</span>
         <a className="footer-top" href="#">উপরে ফিরুন ↑</a>
+        <a
+          className="developer-credit"
+          href="https://codervive.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="CoderVive-এর ওয়েবসাইট নতুন ট্যাবে খুলুন"
+        >
+          <span className="developer-label">Developed with care by</span>
+          <span className="developer-logo-row">
+            <img src="/codervive-logo.svg" alt="CoderVive" width="116" height="36" />
+            <span className="developer-arrow" aria-hidden="true">↗</span>
+          </span>
+        </a>
       </footer>
 
       <button
@@ -467,7 +481,7 @@ export default function Home() {
               </>
             ) : (
               <div className="empty-cart">
-                <span>✳</span><h3>আপনার পরের প্রিয় বইটি অপেক্ষায়।</h3>
+                <span>❧</span><h3>আপনার পরের প্রিয় বইটি অপেক্ষায়।</h3>
                 <p>শুরু করতে পছন্দের বইটি ব্যাগে যোগ করুন।</p>
                 <button className="button button-dark" type="button" onClick={() => { setCartOpen(false); document.getElementById("books")?.scrollIntoView({ behavior: "smooth" }); }}>
                   বইয়ের সংগ্রহ দেখুন

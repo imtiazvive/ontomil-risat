@@ -125,7 +125,7 @@ export default function BookReader({ book }) {
               <span className="paper-section-label">নমুনা পাঠ · পৃষ্ঠা {bengaliNumber(page)}</span>
               <h2>{currentPage.heading}</h2>
               {currentPage.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              <div className="paper-flourish" aria-hidden="true">✳</div>
+              <div className="paper-flourish" aria-hidden="true">❦</div>
             </article>
           )}
           <div className="paper-footer">
