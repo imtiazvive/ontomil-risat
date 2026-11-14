@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { getWhatsAppUrl } from "../../../lib/whatsapp";
+import { getBookUrl, getWhatsAppUrl } from "../../../lib/whatsapp";
 
 const previewPages = [
   {
@@ -54,7 +54,7 @@ function WhatsAppIcon() {
 }
 
 function orderOnWhatsApp(book) {
-  const message = `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
+  const message = `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
   const url = getWhatsAppUrl(message);
   if (!url) {
     window.alert(

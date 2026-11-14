@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { getWhatsAppUrl } from "../lib/whatsapp";
+import { getBookUrl, getWhatsAppUrl } from "../lib/whatsapp";
 
 const books = [
   {
@@ -216,7 +216,7 @@ export default function Home() {
 
   function orderBook(book) {
     orderOnWhatsApp(
-      `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি এই বইটি অর্ডার করতে চাই:\n${book.title} — ${book.author}\nদাম: ${formatPrice(book.price)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
+      `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি এই বইটি অর্ডার করতে চাই:\n${book.title} — ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
     );
   }
 
@@ -224,7 +224,7 @@ export default function Home() {
     if (!cartItems.length) return;
     const lines = cartItems.map(
       (book) =>
-        `• ${book.title} × ${formatNumber(cart[book.id])} — ${formatPrice(book.price * cart[book.id])}`,
+        `• ${book.title} × ${formatNumber(cart[book.id])} — ${formatPrice(book.price * cart[book.id])}\n  বইটির পেজ: ${getBookUrl(book.id)}`,
     );
     orderOnWhatsApp(
       `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি নিচের বইগুলো অর্ডার করতে চাই:\n\n${lines.join("\n")}\n\nসর্বমোট: ${formatPrice(cartTotal)}\n\nবইগুলোর প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
