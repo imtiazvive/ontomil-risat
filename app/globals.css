@@ -87,28 +87,3 @@
   background-position: center;
   background-size: cover;
 }
-
-@utility cover-stillness {
-  background: radial-gradient(ellipse at 60% 30%, #a9aa78 0 11%, transparent 12%), linear-gradient(145deg, #2d554a 5%, #5f816a 50%, #1b403b);
-}
-@utility cover-suns {
-  background: radial-gradient(circle at 50% 30%, #efbb70 0 13%, transparent 13.5%), linear-gradient(160deg, #69858b, #b36e53 61%, #754c4c);
-}
-@utility cover-pather {
-  background: radial-gradient(ellipse at 50% 80%, #d7be82 0 18%, transparent 19%), linear-gradient(145deg, #344e3a, #a1784e 58%, #b49a6a);
-}
-@utility cover-midnight {
-  background: radial-gradient(circle at 72% 27%, #eedcaa 0 4%, transparent 4.5%), radial-gradient(circle at 50% 35%, #617db1 0 20%, transparent 21%), linear-gradient(155deg, #151e44, #394772 55%, #c28069);
-}
-@utility cover-ikigai {
-  background: radial-gradient(circle at 72% 68%, #f5ce70 0 16%, transparent 16.5%), linear-gradient(135deg, #8b5545, #bd7958 52%, #d8a775);
-}
-@utility cover-bali {
-  background: radial-gradient(circle at 50% 35%, #d4ae7e 0 18%, transparent 18.5%), linear-gradient(155deg, #533c40, #9d6252 54%, #d1ad83);
-}
-@utility cover-coffee {
-  background: radial-gradient(ellipse at 50% 63%, #e5b879 0 17%, transparent 17.5%), linear-gradient(145deg, #466871, #76968b 52%, #bd8869);
-}
-@utility cover-habits {
-  background: repeating-linear-gradient(135deg, transparent 0 16px, rgba(255,255,255,.07) 16px 18px), linear-gradient(150deg, #245548, #56836c 55%, #c2985f);
-}

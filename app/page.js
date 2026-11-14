@@ -3,120 +3,23 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { getBookUrl, getWhatsAppUrl } from "../lib/whatsapp";
+import books from "../lib/books";
 
-const books = [
-  {
-    id: 1,
-    title: "নীরবতার শিল্প",
-    author: "পিকো আইয়ার",
-    category: "মন ও জীবন",
-    price: 520,
-    oldPrice: 650,
-    label: "বেস্টসেলার",
-    cover: "stillness",
-    coverTitle: "নীরবতার\nশিল্প",
-    coverAuthor: "পিকো আইয়ার",
-  },
-  {
-    id: 2,
-    title: "হাজারো ঝলমলে সূর্য",
-    author: "খালেদ হোসেইনি",
-    category: "উপন্যাস",
-    price: 690,
-    oldPrice: null,
-    label: "পাঠকের পছন্দ",
-    cover: "suns",
-    coverTitle: "হাজারো\nঝলমলে সূর্য",
-    coverAuthor: "খালেদ হোসেইনি",
-  },
-  {
-    id: 3,
-    title: "পথের পাঁচালী",
-    author: "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
-    category: "বাংলা সাহিত্য",
-    price: 380,
-    oldPrice: null,
-    label: "বাংলা ক্লাসিক",
-    cover: "pather",
-    coverTitle: "পথের\nপাঁচালী",
-    coverAuthor: "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
-  },
-  {
-    id: 4,
-    title: "মধ্যরাতের লাইব্রেরি",
-    author: "ম্যাট হেইগ",
-    category: "উপন্যাস",
-    price: 590,
-    oldPrice: 720,
-    label: "আমাদের পছন্দ",
-    cover: "midnight",
-    coverTitle: "মধ্যরাতের\nলাইব্রেরি",
-    coverAuthor: "ম্যাট হেইগ",
-  },
-  {
-    id: 5,
-    title: "ইকিগাই",
-    author: "হেক্টর গার্সিয়া ও ফ্রান্সেস মিরালেস",
-    category: "মন ও জীবন",
-    price: 450,
-    oldPrice: null,
-    label: "নতুন দৃষ্টিভঙ্গি",
-    cover: "ikigai",
-    coverTitle: "ইকিগাই",
-    coverAuthor: "দীর্ঘ ও সুখী জীবনের জাপানি রহস্য",
-  },
-  {
-    id: 6,
-    title: "চোখের বালি",
-    author: "রবীন্দ্রনাথ ঠাকুর",
-    category: "বাংলা সাহিত্য",
-    price: 320,
-    oldPrice: null,
-    label: "বাংলা ক্লাসিক",
-    cover: "bali",
-    coverTitle: "চোখের\nবালি",
-    coverAuthor: "রবীন্দ্রনাথ ঠাকুর",
-  },
-  {
-    id: 7,
-    title: "কফি ঠান্ডা হওয়ার আগে",
-    author: "তোশিকাজু কাওয়াগুচি",
-    category: "উপন্যাস",
-    price: 560,
-    oldPrice: 640,
-    label: "এক বসায় পড়া যায়",
-    cover: "coffee",
-    coverTitle: "কফি ঠান্ডা\nহওয়ার আগে",
-    coverAuthor: "তোশিকাজু কাওয়াগুচি",
-  },
-  {
-    id: 8,
-    title: "অ্যাটমিক হ্যাবিটস",
-    author: "জেমস ক্লিয়ার",
-    category: "মন ও জীবন",
-    price: 620,
-    oldPrice: null,
-    label: "নিজেকে গড়ুন",
-    cover: "habits",
-    coverTitle: "অ্যাটমিক\nহ্যাবিটস",
-    coverAuthor: "জেমস ক্লিয়ার",
-  },
+const categories = [
+  "সব বই",
+  "উপন্যাস",
+  "বাংলা সাহিত্য",
+  "শিশু-কিশোর",
+  "মন ও জীবন",
+  "মুক্তিযুদ্ধ",
 ];
-
-const categories = ["সব বই", "উপন্যাস", "বাংলা সাহিত্য", "মন ও জীবন"];
-const coverClasses = {
-  stillness: "cover-stillness",
-  suns: "cover-suns",
-  pather: "cover-pather",
-  midnight: "cover-midnight",
-  ikigai: "cover-ikigai",
-  bali: "cover-bali",
-  coffee: "cover-coffee",
-  habits: "cover-habits",
-};
 
 function formatPrice(price) {
   return `৳${price.toLocaleString("bn-BD")}`;
+}
+
+function getDiscountPercent(price, oldPrice) {
+  return Math.round(((oldPrice - price) / oldPrice) * 100).toLocaleString("bn-BD");
 }
 
 function formatNumber(number) {
@@ -166,13 +69,8 @@ function BookSymbol() {
 
 function BookCover({ book }) {
   return (
-    <div className={`relative flex aspect-[.73] w-full flex-col items-center justify-center overflow-hidden px-[15px] pt-[19px] pb-[17px] text-center text-[#fff8e9] shadow-[5px_7px_12px_rgba(35,42,33,.19),inset_1px_0_rgba(255,255,255,.26)] ${coverClasses[book.cover]} -rotate-[1.3deg] transition duration-300 group-hover:-translate-y-1 group-hover:rotate-0 group-hover:shadow-[8px_13px_18px_rgba(35,42,33,.2)] before:absolute before:inset-2 before:border before:border-white/25 before:content-['']`} aria-label={`${book.title} বইয়ের প্রচ্ছদ`}>
-      <span className="absolute top-[22px] font-serif text-[30px] opacity-80" aria-hidden="true">
-        অ
-      </span>
-      <span className="relative mt-5 whitespace-pre-line font-serif text-[clamp(15px,1.5vw,20px)] leading-[1.45]">{book.coverTitle}</span>
-      <span className="my-[11px] h-px w-[22px] bg-current opacity-70" />
-      <span className="relative max-w-[92%] text-[9px] leading-[1.5]">{book.coverAuthor}</span>
+    <div className="relative aspect-[.7] w-full overflow-hidden shadow-[5px_7px_12px_rgba(35,42,33,.19)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[8px_13px_18px_rgba(35,42,33,.2)]">
+      <img className="h-full w-full object-contain" src={book.cover} alt={`${book.title} বইয়ের প্রচ্ছদ`} />
     </div>
   );
 }
@@ -363,7 +261,7 @@ export default function Home() {
                   <Link className="block" href={`/read/${book.id}`} aria-label={`${book.title} নমুনা পড়ুন`}>
                     <BookCover book={book} />
                   </Link>
-                  <span className="absolute top-[21px] left-2 bg-paper px-2 py-1.5 text-[10px] text-[#596c59] max-[640px]:top-4 max-[640px]:left-[5px] max-[640px]:px-1.5 max-[640px]:py-[5px] max-[640px]:text-[9px]">{book.label}</span>
+                  <span className="absolute top-[21px] left-2 rounded-full bg-[#d94a42] px-2 py-1.5 text-[10px] font-semibold text-white shadow-sm max-[640px]:top-4 max-[640px]:left-[5px] max-[640px]:px-1.5 max-[640px]:py-[5px] max-[640px]:text-[9px]">{getDiscountPercent(book.price, book.oldPrice)}% ছাড়</span>
                   <button
                     className="absolute right-2 bottom-2 grid size-[31px] place-items-center rounded-full bg-paper text-xl text-green shadow-md transition hover:rotate-90 hover:bg-green hover:text-white max-[640px]:right-1.5 max-[640px]:bottom-1.5 max-[640px]:size-7"
                     type="button"
@@ -498,7 +396,7 @@ export default function Home() {
                 <div className="flex-1 overflow-y-auto">
                   {cartItems.map((book) => (
                     <div className="flex items-center gap-[13px] border-b border-line py-[17px]" key={book.id}>
-                      <div className={`grid h-[72px] w-[54px] shrink-0 place-items-center font-serif text-2xl text-white shadow-[2px_3px_6px_rgba(0,0,0,.12)] ${coverClasses[book.cover]}`} aria-hidden="true">অ</div>
+                      <img className="h-[72px] w-[54px] shrink-0 rounded-sm object-cover shadow-[2px_3px_6px_rgba(0,0,0,.12)]" src={book.cover} alt="" />
                       <div className="flex flex-1 flex-col gap-[5px]">
                         <strong className="font-serif text-[13px]">{book.title}</strong><span className="text-xs">{formatPrice(book.price)}</span>
                         <div className="mt-1 flex w-max items-center border border-line">
