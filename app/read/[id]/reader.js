@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { getWhatsAppUrl } from "../../../lib/whatsapp";
 
 const previewPages = [
   {
@@ -53,20 +54,16 @@ function WhatsAppIcon() {
 }
 
 function orderOnWhatsApp(book) {
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-  if (!phone || phone.length < 8 || phone.length > 15) {
+  const message = `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
+  const url = getWhatsAppUrl(message);
+  if (!url) {
     window.alert(
-      "অর্ডার চালু করতে .env.local ফাইলে NEXT_PUBLIC_WHATSAPP_NUMBER-এ বিক্রেতার হোয়াটসঅ্যাপ নম্বর যোগ করুন।",
+      "হোয়াটসঅ্যাপ নম্বরটি সঠিকভাবে সেট করা নেই। অনুগ্রহ করে বিক্রেতার সঙ্গে যোগাযোগ করুন।",
     );
     return;
   }
 
-  const message = `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
-  window.open(
-    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
-    "_blank",
-    "noopener,noreferrer",
-  );
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function LockIcon() {
@@ -85,68 +82,68 @@ export default function BookReader({ book }) {
   const currentPage = previewPages[page - 1];
 
   return (
-    <main className="reader-page">
-      <header className="reader-header">
-        <Link className="reader-brand" href="/">
-          <span className="brand-seal">অ</span>
-          <span className="brand-copy"><strong>অন্তমিল</strong><small>প্রকাশনী</small></span>
+    <main className="min-h-screen bg-cream px-[7.2%] pb-9 max-[640px]:px-[5%] max-[640px]:pb-[25px]">
+      <header className="flex min-h-[76px] items-center justify-between border-b border-line max-[640px]:min-h-[65px]">
+        <Link className="inline-flex items-center gap-2.5" href="/">
+          <img className="h-[50px] w-[46px] object-contain mix-blend-multiply max-[640px]:h-11 max-[640px]:w-10" src="/ontomil-logo.png" alt="" width="46" height="50" />
+          <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold max-[640px]:text-lg">অন্তমিল</strong><small className="mt-[5px] text-[11px]">প্রকাশনী</small></span>
         </Link>
-        <Link className="reader-back-link" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
+        <Link className="text-[13px] text-[#657067] transition-colors hover:text-orange max-[640px]:text-[11px]" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
       </header>
 
-      <section className="reader-heading">
-        <span className="eyebrow">বইয়ের নমুনা পাঠ</span>
-        <h1>{book.title}</h1>
-        <p>লেখক: {book.author}</p>
-        <div className="reader-notice">
-          <span aria-hidden="true">i</span>
-          <p>নিচের ৫টি পৃষ্ঠা নমুনা পাঠের জন্য। এগুলো মূল বইয়ের পৃষ্ঠা নয়।</p>
+      <section className="px-4 pt-[34px] pb-[21px] text-center max-[640px]:px-0 max-[640px]:pt-[27px] max-[640px]:pb-[17px]">
+        <span className="text-[11px] font-bold text-[#a45b40]">বইয়ের নমুনা পাঠ</span>
+        <h1 className="mt-2 mb-0.5 font-serif text-[clamp(29px,4vw,40px)] font-semibold leading-[1.4]">{book.title}</h1>
+        <p className="mb-0 text-sm text-muted">লেখক: {book.author}</p>
+        <div className="mx-auto mt-[17px] flex w-fit max-w-full items-center gap-[9px] border border-[#e6ddc9] bg-[#faf6ea] px-[13px] py-2 text-left text-[#71664f] max-[640px]:px-[9px] max-[640px]:py-[7px]">
+          <span className="grid size-[18px] shrink-0 place-items-center rounded-full bg-[#e9dfc8] font-serif text-xs font-bold" aria-hidden="true">i</span>
+          <p className="mb-0 text-xs max-[640px]:text-[10px]">নিচের ৫টি পৃষ্ঠা নমুনা পাঠের জন্য। এগুলো মূল বইয়ের পৃষ্ঠা নয়।</p>
         </div>
       </section>
 
-      <section className="reader-workspace" aria-label="বই পড়ার অংশ">
-        <div className={`reader-paper${isLocked ? " reader-paper-locked" : ""}`}>
-          <div className="paper-topline">
+      <section className="mx-auto w-full max-w-[760px]" aria-label="বই পড়ার অংশ">
+        <div key={page} className="animate-paper-arrive flex min-h-[480px] flex-col border border-[#e5dfd1] bg-[#fffdf8] px-12 pt-[25px] pb-[19px] shadow-[0_9px_28px_rgba(49,48,36,.1)] max-[640px]:min-h-[440px] max-[640px]:px-[19px] max-[640px]:pt-[17px] max-[640px]:pb-[14px]">
+          <div className="flex justify-between gap-3 border-b border-[#ece7db] pb-[11px] text-[10px] text-[#8a897f] max-[640px]:text-[9px]">
             <span>অন্তমিল প্রকাশনী</span>
             <span>{book.title}</span>
           </div>
           {isLocked ? (
-            <div className="locked-page">
-              <span className="locked-icon"><LockIcon /></span>
-              <span className="eyebrow">নমুনা পাঠ শেষ</span>
-              <h2>বাকি পাতাগুলো<br />লক করা আছে</h2>
-              <p>সম্পূর্ণ বইটি পেতে হোয়াটসঅ্যাপে অর্ডার করুন।</p>
-              <button className="button button-dark" type="button" onClick={() => orderOnWhatsApp(book)}>
+            <div className="animate-paper-text flex flex-1 flex-col items-center justify-center text-center">
+              <span className="mb-[17px] grid size-[54px] place-items-center rounded-full bg-[#f1eee6] text-green"><LockIcon /></span>
+              <span className="text-[11px] font-bold text-[#a45b40]">নমুনা পাঠ শেষ</span>
+              <h2 className="mt-2 mb-[9px] font-serif text-[27px] font-semibold leading-[1.5] max-[640px]:text-[23px]">বাকি পাতাগুলো<br />লক করা আছে</h2>
+              <p className="mb-[18px] text-[13px] text-muted">সম্পূর্ণ বইটি পেতে হোয়াটসঅ্যাপে অর্ডার করুন।</p>
+              <button className="inline-flex min-h-[47px] items-center justify-center gap-[11px] rounded-sm bg-green px-[19px] text-[13px] font-semibold text-white transition hover:bg-[#243c30]" type="button" onClick={() => orderOnWhatsApp(book)}>
                 <WhatsAppIcon /> বইটি অর্ডার করুন · {formatPrice(book.price)}
               </button>
             </div>
           ) : (
-            <article className="paper-content">
-              <span className="paper-section-label">নমুনা পাঠ · পৃষ্ঠা {bengaliNumber(page)}</span>
-              <h2>{currentPage.heading}</h2>
-              {currentPage.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              <div className="paper-flourish" aria-hidden="true">❦</div>
+            <article className="animate-paper-text m-auto w-full max-w-[520px] py-[33px] pb-5 max-[640px]:py-[23px]">
+              <span className="text-[11px] text-[#a45b40]">নমুনা পাঠ · পৃষ্ঠা {bengaliNumber(page)}</span>
+              <h2 className="mt-3 mb-[18px] font-serif text-[27px] font-semibold leading-[1.5] max-[640px]:text-[23px]">{currentPage.heading}</h2>
+              {currentPage.paragraphs.map((paragraph) => <p className="mb-4 text-justify font-serif text-base leading-[2] text-[#4c5048] max-[640px]:text-sm max-[640px]:leading-[1.95]" key={paragraph}>{paragraph}</p>)}
+              <div className="mt-5 text-center text-[19px] text-[#c47b58]" aria-hidden="true">❦</div>
             </article>
           )}
-          <div className="paper-footer">
+          <div className="flex justify-between border-t border-[#ece7db] pt-[11px] text-[10px] text-[#8a897f]">
             <span>নমুনা পাঠ</span>
             <span>{bengaliNumber(page)}</span>
           </div>
         </div>
 
-        <div className="reader-controls">
+        <div className="mt-[18px] flex items-center justify-between gap-3 max-[640px]:flex-wrap max-[640px]:justify-center">
           <button
-            className="reader-page-button"
+            className="inline-flex min-h-[38px] items-center gap-[7px] border border-[#dcd7cb] bg-paper px-3 text-xs transition hover:border-green hover:text-green disabled:cursor-not-allowed disabled:opacity-40 max-[640px]:min-h-9 max-[640px]:text-[11px]"
             type="button"
             onClick={() => setPage((current) => Math.max(1, current - 1))}
             disabled={page === 1}
           >
             ← আগের পৃষ্ঠা
           </button>
-          <div className="reader-progress" aria-label={`পৃষ্ঠা ${bengaliNumber(page)}; ৫টি বিনামূল্যের পৃষ্ঠা`}>
+          <div className="flex items-center gap-[7px] max-[640px]:order-first max-[640px]:w-full max-[640px]:justify-center" aria-label={`পৃষ্ঠা ${bengaliNumber(page)}; ৫টি বিনামূল্যের পৃষ্ঠা`}>
             {previewPages.map((_, index) => (
               <button
-                className={`progress-dot${page === index + 1 ? " active" : ""}${page > index + 1 ? " visited" : ""}`}
+                className={`grid size-[30px] place-items-center rounded-full border text-[11px] transition hover:-translate-y-0.5 ${page === index + 1 ? "border-green bg-green text-white" : page > index + 1 ? "border-[#9baa95] bg-paper text-green" : "border-[#ded9ce] bg-paper text-[#717469]"}`}
                 key={index}
                 type="button"
                 onClick={() => setPage(index + 1)}
@@ -155,31 +152,31 @@ export default function BookReader({ book }) {
                 {bengaliNumber(index + 1)}
               </button>
             ))}
-            <span className={`progress-lock${isLocked ? " active" : ""}`} aria-label="লক করা পৃষ্ঠা">
+            <span className={`grid size-[30px] place-items-center rounded-full border ${isLocked ? "border-[#c9825f] bg-[#f6e8df] text-[#a45b40]" : "border-[#ded9ce] text-[#858579]"}`} aria-label="লক করা পৃষ্ঠা">
               <LockIcon />
             </span>
           </div>
           <button
-            className="reader-page-button reader-next-button"
+            className="inline-flex min-h-[38px] items-center gap-[7px] border border-[#dcd7cb] bg-paper px-3 text-xs transition hover:border-green hover:text-green disabled:cursor-not-allowed disabled:opacity-40 max-[640px]:min-h-9 max-[640px]:text-[11px]"
             type="button"
             onClick={() => setPage((current) => Math.min(previewPages.length + 1, current + 1))}
             disabled={isLocked}
           >
             পরের পৃষ্ঠা →
-            {page === previewPages.length && <span className="next-lock"><LockIcon /></span>}
+            {page === previewPages.length && <span className="inline-flex"><LockIcon /></span>}
           </button>
         </div>
-        <p className="reader-progress-caption">
+        <p className="mt-2 mb-0 text-center text-[11px] text-[#858579]">
           {isLocked
             ? "এই পৃষ্ঠাটি পড়তে সম্পূর্ণ বইটি অর্ডার করুন।"
             : `${bengaliNumber(page)} / ${bengaliNumber(previewPages.length)}টি বিনামূল্যের পৃষ্ঠা`}
         </p>
       </section>
 
-      <footer className="reader-footer">
-        <Link href="/#books">← অন্য বই বেছে নিন</Link>
+      <footer className="mx-auto mt-[23px] flex w-full max-w-[760px] items-center justify-between gap-[14px] border-t border-[#dfdacd] pt-4 max-[640px]:flex-col max-[640px]:items-start">
+        <Link className="text-xs text-[#657067] hover:text-orange" href="/#books">← অন্য বই বেছে নিন</Link>
         {!isLocked && (
-          <button className="reader-order-link" type="button" onClick={() => orderOnWhatsApp(book)}>
+          <button className="inline-flex items-center gap-2 border-0 bg-transparent px-3 py-2 text-xs font-semibold text-green hover:text-orange" type="button" onClick={() => orderOnWhatsApp(book)}>
             <WhatsAppIcon /> সম্পূর্ণ বই অর্ডার করুন · {formatPrice(book.price)}
           </button>
         )}
