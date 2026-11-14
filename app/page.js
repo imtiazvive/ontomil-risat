@@ -144,6 +144,15 @@ function BagIcon() {
   );
 }
 
+function BookSymbol() {
+  return (
+    <svg className="book-symbol" aria-hidden="true" viewBox="0 0 32 32" fill="none">
+      <path d="M16 8.5c-3.1-2.2-7.3-2.7-12-1.6v17c4.7-1.1 8.9-.6 12 1.6m0-17c3.1-2.2 7.3-2.7 12-1.6v17c-4.7-1.1-8.9-.6-12 1.6m0-17v17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8 11.5c1.8-.2 3.4.1 4.8.8m-4.8 3c1.8-.2 3.4.1 4.8.8m10.4-4.6c-1.8-.2-3.4.1-4.8.8m4.8 3c-1.8-.2-3.4.1-4.8.8" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function BookCover({ book }) {
   return (
     <div className={`book-cover cover-${book.cover}`} aria-label={`${book.title} বইয়ের প্রচ্ছদ`}>
@@ -273,7 +282,7 @@ export default function Home() {
             পছন্দের বই খুঁজুন <span aria-hidden="true">↗</span>
           </a>
           <div className="hero-note">
-            <span className="note-star">❧</span>
+            <span className="note-star"><BookSymbol /></span>
             <span>যত্ন করে বাছাই।<br /><strong>আপনার জন্যই।</strong></span>
           </div>
         </div>
@@ -366,7 +375,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="empty-results">
-            <span>❧</span>
+            <span><BookSymbol /></span>
             <h3>এই নামে কোনো বই পাওয়া যায়নি।</h3>
             <p>অন্য নাম, লেখক বা বিভাগ দিয়ে খুঁজে দেখুন।</p>
             <button type="button" onClick={() => { setSearch(""); setActiveCategory("সব বই"); }}>
@@ -410,7 +419,7 @@ export default function Home() {
           হোয়াটসঅ্যাপে কথা বলুন
           <span aria-hidden="true">↗</span>
         </button>
-        <span className="contact-doodle" aria-hidden="true">❧</span>
+        <span className="contact-doodle"><BookSymbol /></span>
       </section>
 
       <footer className="site-footer">
@@ -481,7 +490,7 @@ export default function Home() {
               </>
             ) : (
               <div className="empty-cart">
-                <span>❧</span><h3>আপনার পরের প্রিয় বইটি অপেক্ষায়।</h3>
+                <span><BookSymbol /></span><h3>আপনার পরের প্রিয় বইটি অপেক্ষায়।</h3>
                 <p>শুরু করতে পছন্দের বইটি ব্যাগে যোগ করুন।</p>
                 <button className="button button-dark" type="button" onClick={() => { setCartOpen(false); document.getElementById("books")?.scrollIntoView({ behavior: "smooth" }); }}>
                   বইয়ের সংগ্রহ দেখুন
