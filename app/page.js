@@ -115,7 +115,7 @@ export default function Home() {
 
   function orderBook(book) {
     orderOnWhatsApp(
-      `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি এই বইটি অর্ডার করতে চাই:\n${book.title} — ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
+      `আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী,\n\nআমি এই বইটি অর্ডার করতে চাই:\n${book.title} — ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
     );
   }
 
@@ -126,7 +126,7 @@ export default function Home() {
         `• ${book.title} × ${formatNumber(cart[book.id])} — ${formatPrice(book.price * cart[book.id])}\n  বইটির পেজ: ${getBookUrl(book.id)}`,
     );
     orderOnWhatsApp(
-      `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি নিচের বইগুলো অর্ডার করতে চাই:\n\n${lines.join("\n")}\n\nসর্বমোট: ${formatPrice(cartTotal)}\n\nবইগুলোর প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
+      `আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী,\n\nআমি নিচের বইগুলো অর্ডার করতে চাই:\n\n${lines.join("\n")}\n\nসর্বমোট: ${formatPrice(cartTotal)}\n\nবইগুলোর প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`,
     );
   }
 
@@ -141,7 +141,7 @@ export default function Home() {
     const summary = formData.get("summary");
 
     orderOnWhatsApp(
-      `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি লেখক হিসেবে বই প্রকাশের প্রস্তাব দিতে চাই।\n\nলেখকের নাম: ${authorName}\nযোগাযোগ নম্বর: ${phone}\nবইয়ের নাম: ${bookTitle}\nবইয়ের ধরন: ${category}\nপাণ্ডুলিপির অবস্থা: ${manuscriptStatus}${summary ? `\nবই সম্পর্কে: ${summary}` : ""}\n\nপাণ্ডুলিপি প্রস্তুত থাকলে এই মেসেজ পাঠানোর পর WhatsApp-এ ফাইল হিসেবে পাঠাব। প্রকাশনার পরবর্তী ধাপ সম্পর্কে জানাবেন।`,
+      `আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী,\n\nআমি লেখক হিসেবে বই প্রকাশের প্রস্তাব দিতে চাই।\n\nলেখকের নাম: ${authorName}\nযোগাযোগ নম্বর: ${phone}\nবইয়ের নাম: ${bookTitle}\nবইয়ের ধরন: ${category}\nপাণ্ডুলিপির অবস্থা: ${manuscriptStatus}${summary ? `\nবই সম্পর্কে: ${summary}` : ""}\n\nপাণ্ডুলিপি প্রস্তুত থাকলে এই মেসেজ পাঠানোর পর WhatsApp-এ ফাইল হিসেবে পাঠাব। প্রকাশনার পরবর্তী ধাপ সম্পর্কে জানাবেন।`,
     );
   }
 
@@ -166,10 +166,10 @@ export default function Home() {
       </div>
 
       <header className="sticky top-0 z-10 flex h-[82px] items-center justify-between border-b border-ink/10 bg-paper/95 px-[7.2%] backdrop-blur-xl max-[900px]:px-[5%] max-[640px]:h-[70px]">
-        <a className="group inline-flex shrink-0 items-center gap-2.5" href="#" aria-label="অন্তমিল প্রকাশনী — হোম">
+        <a className="group inline-flex shrink-0 items-center gap-2.5" href="#" aria-label="অন্ত্যমিল প্রকাশনী — হোম">
           <img className="h-[54px] w-[49px] object-contain mix-blend-multiply transition duration-300 group-hover:scale-105 max-[640px]:h-12 max-[640px]:w-11" src={withBasePath("/ontomil-logo.png")} alt="" width="49" height="54" />
           <span className="flex flex-col leading-none">
-            <strong className="font-serif text-[22px] font-semibold max-[640px]:text-[18px]">অন্তমিল</strong>
+            <strong className="font-serif text-[22px] font-semibold max-[640px]:text-[18px]">অন্ত্যমিল</strong>
             <small className="mt-[5px] text-[10px]">প্রকাশনী</small>
           </span>
         </a>
@@ -198,7 +198,7 @@ export default function Home() {
 
       <section className="grid min-h-[570px] grid-cols-[.86fr_1.14fr] items-center gap-[6%] overflow-hidden px-[7.2%] py-[58px] max-[900px]:gap-[5%] max-[900px]:px-[5%] max-[760px]:grid-cols-1 max-[760px]:gap-[30px] max-[760px]:px-[8%] max-[640px]:gap-[30px] max-[640px]:px-[6%] max-[640px]:pt-11 max-[640px]:pb-[34px]">
         <div className="pl-[4.8%] pt-[15px] max-[900px]:pl-[1%] max-[760px]:pl-0 max-[640px]:p-0">
-          <span className="animate-settle-in flex items-center gap-[9px] text-[11px] font-bold text-[#6a7968] [animation-delay:80ms]"><span className="size-1.5 rounded-full bg-orange" /> অন্তমিল প্রকাশনী · লেখক ও পাঠকের পাশে</span>
+          <span className="animate-settle-in flex items-center gap-[9px] text-[11px] font-bold text-[#6a7968] [animation-delay:80ms]"><span className="size-1.5 rounded-full bg-orange" /> অন্ত্যমিল প্রকাশনী · লেখক ও পাঠকের পাশে</span>
           <h1 className="animate-settle-in mt-6 mb-4 font-serif text-[clamp(48px,5vw,72px)] font-medium leading-[1.35] [animation-delay:160ms] max-[640px]:mt-[18px] max-[640px]:text-[clamp(44px,11vw,62px)]">আপনার গল্প<br />পাঠকের <em className="text-orange not-italic">হাতে।</em></h1>
           <p className="animate-settle-in mb-[25px] max-w-[370px] text-[15px] leading-[1.8] text-muted [animation-delay:240ms] max-[640px]:text-xs">
             পছন্দের বই কিনুন, আর আপনার লেখা বই প্রকাশের প্রস্তাব দিন, দুটোই এখানে।
@@ -405,7 +405,7 @@ export default function Home() {
           <span className="text-[11px] font-bold text-[#a45b40]">প্রকাশক ও পাঠকের পাশে</span>
           <h2 className="mt-3 mb-[17px] font-serif text-[clamp(34px,3.1vw,43px)] font-medium leading-[1.35] max-[640px]:text-[38px]">লেখার যত্ন,<br /><em className="text-orange not-italic">পাঠকের ভালোবাসা।</em></h2>
           <p className="mb-5 max-w-[430px] text-[13px] leading-[1.9] text-[#6e7469]">
-            অন্তমিল প্রকাশনী লেখকের নতুন পাণ্ডুলিপি প্রকাশের প্রস্তাব গ্রহণ করে,
+            অন্ত্যমিল প্রকাশনী লেখকের নতুন পাণ্ডুলিপি প্রকাশের প্রস্তাব গ্রহণ করে,
             আর পাঠকদের জন্য সাজায় বেছে নেওয়া বইয়ের সংগ্রহ। লেখক হিসেবে
             প্রস্তাব পাঠান, অথবা আপনার পরের প্রিয় বইটি খুঁজে নিন।
           </p>
@@ -424,7 +424,7 @@ export default function Home() {
         <button
           className="relative z-[1] inline-flex min-h-[47px] items-center justify-center gap-[11px] rounded-sm bg-[#f5f0e5] px-[19px] text-[13px] font-semibold text-green transition hover:-translate-y-0.5 hover:bg-white"
           type="button"
-          onClick={() => orderOnWhatsApp("আসসালামু আলাইকুম অন্তমিল প্রকাশনী, আমার পরের পছন্দের বইটি খুঁজে পেতে একটু পরামর্শ চাই।")}
+          onClick={() => orderOnWhatsApp("আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী, আমার পরের পছন্দের বইটি খুঁজে পেতে একটু পরামর্শ চাই।")}
         >
           <WhatsAppIcon />
           হোয়াটসঅ্যাপে কথা বলুন
@@ -436,9 +436,9 @@ export default function Home() {
       <footer className="border-t border-line bg-[#f6f3ec]">
         <div className="mx-auto grid max-w-[1180px] grid-cols-[1.2fr_.8fr_auto] items-center gap-10 px-[7.2%] py-9 max-[900px]:gap-6 max-[760px]:grid-cols-2 max-[760px]:gap-x-5 max-[760px]:gap-y-7 max-[640px]:px-[6%] max-[640px]:py-7">
           <div className="flex items-center gap-3 max-[760px]:col-span-2">
-            <a className="inline-flex shrink-0 items-center gap-2.5" href="#" aria-label="অন্তমিল প্রকাশনী — হোম">
+            <a className="inline-flex shrink-0 items-center gap-2.5" href="#" aria-label="অন্ত্যমিল প্রকাশনী — হোম">
               <img className="h-[58px] w-[53px] object-contain mix-blend-multiply" src={withBasePath("/ontomil-logo.png")} alt="" width="53" height="58" />
-              <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold">অন্তমিল</strong><small className="mt-[5px] text-[10px]">প্রকাশনী</small></span>
+              <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold">অন্ত্যমিল</strong><small className="mt-[5px] text-[10px]">প্রকাশনী</small></span>
             </a>
             <p className="mb-0 max-w-[175px] border-l border-[#ded7ca] pl-3 text-[11px] leading-[1.7] text-[#77766d] max-[640px]:max-w-[150px] max-[640px]:text-[10px]">বইয়ের পাতায় খুঁজে নিন আপনার পরের গল্প।</p>
           </div>
@@ -471,8 +471,8 @@ export default function Home() {
       <button
         className="animate-float-soft fixed right-[23px] bottom-[22px] z-[5] grid size-[47px] place-items-center rounded-full border-0 bg-[#258b5b] text-white shadow-[0_5px_18px_rgba(29,57,38,.24)] transition hover:-translate-y-[3px] max-[640px]:right-[15px] max-[640px]:bottom-[15px] max-[640px]:size-11"
         type="button"
-        onClick={() => orderOnWhatsApp("আসসালামু আলাইকুম অন্তমিল প্রকাশনী, আপনাদের বই সম্পর্কে আরও জানতে চাই।")}
-        aria-label="হোয়াটসঅ্যাপে অন্তমিল প্রকাশনীর সঙ্গে কথা বলুন"
+        onClick={() => orderOnWhatsApp("আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী, আপনাদের বই সম্পর্কে আরও জানতে চাই।")}
+        aria-label="হোয়াটসঅ্যাপে অন্ত্যমিল প্রকাশনীর সঙ্গে কথা বলুন"
       >
         <WhatsAppIcon size={21} />
       </button>
