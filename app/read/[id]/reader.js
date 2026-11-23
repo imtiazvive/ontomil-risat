@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { getBookUrl, getWhatsAppUrl } from "../../../lib/whatsapp";
+import { withBasePath } from "../../../lib/site";
 
 const previewPages = [
   {
@@ -85,7 +86,7 @@ export default function BookReader({ book }) {
     <main className="min-h-screen bg-cream px-[7.2%] pb-9 max-[640px]:px-[5%] max-[640px]:pb-[25px]">
       <header className="flex min-h-[76px] items-center justify-between border-b border-line max-[640px]:min-h-[65px]">
         <Link className="inline-flex items-center gap-2.5" href="/">
-          <img className="h-[50px] w-[46px] object-contain mix-blend-multiply max-[640px]:h-11 max-[640px]:w-10" src="/ontomil-logo.png" alt="" width="46" height="50" />
+          <img className="h-[50px] w-[46px] object-contain mix-blend-multiply max-[640px]:h-11 max-[640px]:w-10" src={withBasePath("/ontomil-logo.png")} alt="" width="46" height="50" />
           <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold max-[640px]:text-lg">অন্তমিল</strong><small className="mt-[5px] text-[11px]">প্রকাশনী</small></span>
         </Link>
         <Link className="text-[13px] text-[#657067] transition-colors hover:text-orange max-[640px]:text-[11px]" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
