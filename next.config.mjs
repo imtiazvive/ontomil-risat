@@ -1,6 +1,5 @@
 const nextConfig = {
   output: "export",
-  basePath: "/ontomil-risat",
   trailingSlash: true,
 };
 
