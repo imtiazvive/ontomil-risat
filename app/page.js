@@ -405,9 +405,9 @@ export default function Home() {
           <span className="text-[11px] font-bold text-[#a45b40]">প্রকাশক ও পাঠকের পাশে</span>
           <h2 className="mt-3 mb-[17px] font-serif text-[clamp(34px,3.1vw,43px)] font-medium leading-[1.35] max-[640px]:text-[38px]">লেখার যত্ন,<br /><em className="text-orange not-italic">পাঠকের ভালোবাসা।</em></h2>
           <p className="mb-5 max-w-[430px] text-[13px] leading-[1.9] text-[#6e7469]">
-            অন্ত্যমিল প্রকাশনী লেখকের নতুন পাণ্ডুলিপি প্রকাশের প্রস্তাব গ্রহণ করে,
-            আর পাঠকদের জন্য সাজায় বেছে নেওয়া বইয়ের সংগ্রহ। লেখক হিসেবে
-            প্রস্তাব পাঠান, অথবা আপনার পরের প্রিয় বইটি খুঁজে নিন।
+            অন্ত্যমিল প্রকাশনী (Ontymil; Ontomil ও Ontymel বানানেও খুঁজুন)
+            বাংলাদেশের বাংলা বই প্রকাশনী। এখানে পছন্দের বাংলা বই কিনুন, আর
+            লেখক হিসেবে বই প্রকাশনার জন্য পাণ্ডুলিপি জমা দেওয়ার প্রস্তাব দিন।
           </p>
           <div className="flex flex-wrap gap-5">
             <a className="border-b border-[#6d7f6f] pb-1 text-xs font-semibold" href="#publish">প্রকাশনার প্রস্তাব দিন <span className="pl-2 text-orange" aria-hidden="true">↗</span></a>

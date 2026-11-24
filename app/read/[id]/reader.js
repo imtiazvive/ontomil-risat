@@ -55,7 +55,7 @@ function WhatsAppIcon() {
 }
 
 function orderOnWhatsApp(book) {
-  const message = `আসসালামু আলাইকুম অন্তমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
+  const message = `আসসালামু আলাইকুম অন্ত্যমিল প্রকাশনী,\n\nআমি ${book.title} বইটি অর্ডার করতে চাই।\nলেখক: ${book.author}\nদাম: ${formatPrice(book.price)}\nবইটির পেজ: ${getBookUrl(book.id)}\n\nবইটির প্রাপ্যতা ও ডেলিভারির তথ্য জানাবেন।`;
   const url = getWhatsAppUrl(message);
   if (!url) {
     window.alert(
@@ -87,7 +87,7 @@ export default function BookReader({ book }) {
       <header className="flex min-h-[76px] items-center justify-between border-b border-line max-[640px]:min-h-[65px]">
         <Link className="inline-flex items-center gap-2.5" href="/">
           <img className="h-[50px] w-[46px] object-contain mix-blend-multiply max-[640px]:h-11 max-[640px]:w-10" src={withBasePath("/ontomil-logo.png")} alt="" width="46" height="50" />
-          <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold max-[640px]:text-lg">অন্তমিল</strong><small className="mt-[5px] text-[11px]">প্রকাশনী</small></span>
+          <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold max-[640px]:text-lg">অন্ত্যমিল</strong><small className="mt-[5px] text-[11px]">প্রকাশনী</small></span>
         </Link>
         <Link className="text-[13px] text-[#657067] transition-colors hover:text-orange max-[640px]:text-[11px]" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
       </header>
@@ -105,7 +105,7 @@ export default function BookReader({ book }) {
       <section className="mx-auto w-full max-w-[760px]" aria-label="বই পড়ার অংশ">
         <div key={page} className="animate-paper-arrive flex min-h-[480px] flex-col border border-[#e5dfd1] bg-[#fffdf8] px-12 pt-[25px] pb-[19px] shadow-[0_9px_28px_rgba(49,48,36,.1)] max-[640px]:min-h-[440px] max-[640px]:px-[19px] max-[640px]:pt-[17px] max-[640px]:pb-[14px]">
           <div className="flex justify-between gap-3 border-b border-[#ece7db] pb-[11px] text-[10px] text-[#8a897f] max-[640px]:text-[9px]">
-            <span>অন্তমিল প্রকাশনী</span>
+            <span>অন্ত্যমিল প্রকাশনী</span>
             <span>{book.title}</span>
           </div>
           {isLocked ? (

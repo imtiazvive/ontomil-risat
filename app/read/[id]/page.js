@@ -11,15 +11,27 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   const book = books.find((item) => item.id === Number(id));
 
-  if (!book) return { title: "বই পাওয়া যায়নি | অন্তমিল প্রকাশনী" };
+  if (!book) return { title: "বই পাওয়া যায়নি | অন্ত্যমিল প্রকাশনী" };
 
   const canonicalUrl = `${siteUrl}read/${book.id}/`;
-  const title = `${book.title} — নমুনা পাঠ | অন্তমিল প্রকাশনী`;
-  const description = `${book.title} বইটির ৫ পৃষ্ঠার নমুনা পড়ুন। লেখক: ${book.author}।`;
+  const title = `${book.title} — নমুনা পাঠ | Ontymil | অন্ত্যমিল প্রকাশনী`;
+  const description = `${book.title} বইটি কিনুন এবং ৫ পৃষ্ঠার নমুনা পড়ুন। লেখক: ${book.author}। Ontymil Prokashon Books—অন্ত্যমিল প্রকাশনী।`;
 
   return {
     title,
     description,
+    keywords: [
+      book.title,
+      book.author,
+      book.category,
+      "Ontymil",
+      "Ontymil Prokashon",
+      "Ontymil Prokashon Books",
+      "অন্ত্যমিল",
+      "অন্ত্যমিল প্রকাশনী",
+      "বাংলা বই",
+      "বই কিনুন",
+    ],
     alternates: {
       canonical: canonicalUrl,
     },
@@ -27,7 +39,7 @@ export async function generateMetadata({ params }) {
       type: "article",
       locale: "bn_BD",
       url: canonicalUrl,
-      siteName: "অন্তমিল প্রকাশনী",
+      siteName: "অন্ত্যমিল প্রকাশনী",
       title,
       description,
       images: [
@@ -35,7 +47,7 @@ export async function generateMetadata({ params }) {
           url: withBasePath("/opengraph-image.png"),
           width: 1200,
           height: 630,
-          alt: `${book.title} — অন্তমিল প্রকাশনীর বই`,
+          alt: `${book.title} — অন্ত্যমিল প্রকাশনীর বই`,
         },
       ],
     },
