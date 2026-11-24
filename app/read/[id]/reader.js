@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import books from "../../../lib/books";
 import { getBookUrl, getWhatsAppUrl } from "../../../lib/whatsapp";
 import { withBasePath } from "../../../lib/site";
 
@@ -79,8 +80,42 @@ function LockIcon() {
 
 export default function BookReader({ book }) {
   const [page, setPage] = useState(1);
+  const [suggestedBooks, setSuggestedBooks] = useState([]);
+  const viewerRef = useRef(null);
+  const pageRefs = useRef([]);
   const isLocked = page > previewPages.length;
-  const currentPage = previewPages[page - 1];
+
+  useEffect(() => {
+    const candidates = books.filter((item) => item.id !== book.id);
+    for (let index = candidates.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      [candidates[index], candidates[randomIndex]] = [candidates[randomIndex], candidates[index]];
+    }
+    setSuggestedBooks(candidates.slice(0, 3));
+  }, [book.id]);
+
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const mostVisible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0];
+        if (mostVisible) setPage(Number(mostVisible.target.dataset.page));
+      },
+      { root: viewer, threshold: [0.25, 0.5, 0.75] },
+    );
+
+    pageRefs.current.filter(Boolean).forEach((pageElement) => observer.observe(pageElement));
+    return () => observer.disconnect();
+  }, [book.id]);
+
+  function goToPage(nextPage) {
+    setPage(nextPage);
+    pageRefs.current[nextPage - 1]?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
     <main className="min-h-screen bg-cream px-[7.2%] pb-9 max-[640px]:px-[5%] max-[640px]:pb-[25px]">
@@ -89,7 +124,7 @@ export default function BookReader({ book }) {
           <img className="h-[50px] w-[46px] object-contain mix-blend-multiply max-[640px]:h-11 max-[640px]:w-10" src={withBasePath("/ontomil-logo.png")} alt="" width="46" height="50" />
           <span className="flex flex-col leading-none"><strong className="font-serif text-xl font-semibold max-[640px]:text-lg">অন্ত্যমিল</strong><small className="mt-[5px] text-[11px]">প্রকাশনী</small></span>
         </Link>
-        <Link className="text-[13px] text-[#657067] transition-colors hover:text-orange max-[640px]:text-[11px]" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
+        <Link className="inline-flex min-h-10 items-center rounded-sm border border-[#dcd7cb] bg-paper px-3 text-[13px] text-[#657067] transition hover:border-green hover:text-green max-[640px]:min-h-9 max-[640px]:px-2 max-[640px]:text-[11px]" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
       </header>
 
       <section className="px-4 pt-[34px] pb-[21px] text-center max-[640px]:px-0 max-[640px]:pt-[27px] max-[640px]:pb-[17px]">
@@ -103,32 +138,42 @@ export default function BookReader({ book }) {
       </section>
 
       <section className="mx-auto w-full max-w-[760px]" aria-label="বই পড়ার অংশ">
-        <div key={page} className="animate-paper-arrive flex min-h-[480px] flex-col border border-[#e5dfd1] bg-[#fffdf8] px-12 pt-[25px] pb-[19px] shadow-[0_9px_28px_rgba(49,48,36,.1)] max-[640px]:min-h-[440px] max-[640px]:px-[19px] max-[640px]:pt-[17px] max-[640px]:pb-[14px]">
-          <div className="flex justify-between gap-3 border-b border-[#ece7db] pb-[11px] text-[10px] text-[#8a897f] max-[640px]:text-[9px]">
-            <span>অন্ত্যমিল প্রকাশনী</span>
-            <span>{book.title}</span>
-          </div>
-          {isLocked ? (
-            <div className="animate-paper-text flex flex-1 flex-col items-center justify-center text-center">
-              <span className="mb-[17px] grid size-[54px] place-items-center rounded-full bg-[#f1eee6] text-green"><LockIcon /></span>
-              <span className="text-[11px] font-bold text-[#a45b40]">নমুনা পাঠ শেষ</span>
-              <h2 className="mt-2 mb-[9px] font-serif text-[27px] font-semibold leading-[1.5] max-[640px]:text-[23px]">বাকি পাতাগুলো<br />লক করা আছে</h2>
-              <p className="mb-[18px] text-[13px] text-muted">সম্পূর্ণ বইটি পেতে হোয়াটসঅ্যাপে অর্ডার করুন।</p>
-              <button className="inline-flex min-h-[47px] items-center justify-center gap-[11px] rounded-sm bg-green px-[19px] text-[13px] font-semibold text-white transition hover:bg-[#243c30]" type="button" onClick={() => orderOnWhatsApp(book)}>
-                <WhatsAppIcon /> বইটি অর্ডার করুন · {formatPrice(book.price)}
-              </button>
-            </div>
-          ) : (
-            <article className="animate-paper-text m-auto w-full max-w-[520px] py-[33px] pb-5 max-[640px]:py-[23px]">
-              <span className="text-[11px] text-[#a45b40]">নমুনা পাঠ · পৃষ্ঠা {bengaliNumber(page)}</span>
-              <h2 className="mt-3 mb-[18px] font-serif text-[27px] font-semibold leading-[1.5] max-[640px]:text-[23px]">{currentPage.heading}</h2>
-              {currentPage.paragraphs.map((paragraph) => <p className="mb-4 text-justify font-serif text-base leading-[2] text-[#4c5048] max-[640px]:text-sm max-[640px]:leading-[1.95]" key={paragraph}>{paragraph}</p>)}
-              <div className="mt-5 text-center text-[19px] text-[#c47b58]" aria-hidden="true">❦</div>
+        <div
+          ref={viewerRef}
+          className="max-h-[76vh] min-h-[440px] snap-y snap-mandatory space-y-4 overflow-y-auto overscroll-contain scroll-smooth pr-2 max-[640px]:max-h-[68vh] max-[640px]:min-h-[390px] max-[640px]:pr-1"
+          aria-label="পাঁচ পৃষ্ঠার নমুনা বই ভিউয়ার; স্ক্রল করে পড়ুন"
+          tabIndex={0}
+        >
+          {previewPages.map((content, index) => (
+            <article
+              className="animate-paper-arrive flex min-h-[620px] snap-start flex-col border border-[#e5dfd1] bg-[#fffdf8] px-12 pt-[25px] pb-[19px] shadow-[0_9px_28px_rgba(49,48,36,.1)] max-[640px]:min-h-[530px] max-[640px]:px-[19px] max-[640px]:pt-[17px] max-[640px]:pb-[14px]"
+              data-page={index + 1}
+              key={content.heading}
+              ref={(element) => { pageRefs.current[index] = element; }}
+            >
+              <img
+                className="animate-paper-text mx-auto block h-auto w-full max-w-[650px] shadow-[0_2px_12px_rgba(49,48,36,.08)]"
+                src={withBasePath(`/book-pages/sample-page-${index + 1}.jpg`)}
+                alt={`পৃষ্ঠা ${bengaliNumber(index + 1)} — ${content.heading}. ${content.paragraphs.join(" ")}`}
+                width="900"
+                height="1200"
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
             </article>
-          )}
-          <div className="flex justify-between border-t border-[#ece7db] pt-[11px] text-[10px] text-[#8a897f]">
-            <span>নমুনা পাঠ</span>
-            <span>{bengaliNumber(page)}</span>
+          ))}
+          <div
+            className="flex min-h-[430px] snap-start flex-col items-center justify-center border border-[#e5dfd1] bg-[#fffdf8] px-8 py-10 text-center shadow-[0_9px_28px_rgba(49,48,36,.1)] max-[640px]:min-h-[390px] max-[640px]:px-4"
+            data-page={previewPages.length + 1}
+            ref={(element) => { pageRefs.current[previewPages.length] = element; }}
+          >
+            <span className="mb-[17px] grid size-[54px] place-items-center rounded-full bg-[#f1eee6] text-green"><LockIcon /></span>
+            <span className="text-[11px] font-bold text-[#a45b40]">নমুনা পাঠ শেষ</span>
+            <h2 className="mt-2 mb-[9px] font-serif text-[27px] font-semibold leading-[1.5] max-[640px]:text-[23px]">বাকি পাতাগুলো<br />লক করা আছে</h2>
+            <p className="mb-[18px] text-[13px] text-muted">সম্পূর্ণ বইটি পেতে হোয়াটসঅ্যাপে অর্ডার করুন।</p>
+            <button className="inline-flex min-h-[47px] items-center justify-center gap-[11px] rounded-sm bg-green px-[19px] text-[13px] font-semibold text-white transition hover:bg-[#243c30]" type="button" onClick={() => orderOnWhatsApp(book)}>
+              <WhatsAppIcon /> বইটি অর্ডার করুন · {formatPrice(book.price)}
+            </button>
           </div>
         </div>
 
@@ -136,7 +181,7 @@ export default function BookReader({ book }) {
           <button
             className="inline-flex min-h-[38px] items-center gap-[7px] border border-[#dcd7cb] bg-paper px-3 text-xs transition hover:border-green hover:text-green disabled:cursor-not-allowed disabled:opacity-40 max-[640px]:min-h-9 max-[640px]:text-[11px]"
             type="button"
-            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            onClick={() => goToPage(Math.max(1, page - 1))}
             disabled={page === 1}
           >
             ← আগের পৃষ্ঠা
@@ -147,20 +192,20 @@ export default function BookReader({ book }) {
                 className={`grid size-[30px] place-items-center rounded-full border text-[11px] transition hover:-translate-y-0.5 ${page === index + 1 ? "border-green bg-green text-white" : page > index + 1 ? "border-[#9baa95] bg-paper text-green" : "border-[#ded9ce] bg-paper text-[#717469]"}`}
                 key={index}
                 type="button"
-                onClick={() => setPage(index + 1)}
+                onClick={() => goToPage(index + 1)}
                 aria-label={`পৃষ্ঠা ${bengaliNumber(index + 1)} পড়ুন`}
               >
                 {bengaliNumber(index + 1)}
               </button>
             ))}
-            <span className={`grid size-[30px] place-items-center rounded-full border ${isLocked ? "border-[#c9825f] bg-[#f6e8df] text-[#a45b40]" : "border-[#ded9ce] text-[#858579]"}`} aria-label="লক করা পৃষ্ঠা">
+            <button className={`grid size-[30px] place-items-center rounded-full border transition ${isLocked ? "border-[#c9825f] bg-[#f6e8df] text-[#a45b40]" : "border-[#ded9ce] text-[#858579] hover:border-green hover:text-green"}`} type="button" onClick={() => goToPage(previewPages.length + 1)} aria-label="লক করা পৃষ্ঠা দেখুন">
               <LockIcon />
-            </span>
+            </button>
           </div>
           <button
             className="inline-flex min-h-[38px] items-center gap-[7px] border border-[#dcd7cb] bg-paper px-3 text-xs transition hover:border-green hover:text-green disabled:cursor-not-allowed disabled:opacity-40 max-[640px]:min-h-9 max-[640px]:text-[11px]"
             type="button"
-            onClick={() => setPage((current) => Math.min(previewPages.length + 1, current + 1))}
+            onClick={() => goToPage(Math.min(previewPages.length + 1, page + 1))}
             disabled={isLocked}
           >
             পরের পৃষ্ঠা →
@@ -174,13 +219,36 @@ export default function BookReader({ book }) {
         </p>
       </section>
 
-      <footer className="mx-auto mt-[23px] flex w-full max-w-[760px] items-center justify-between gap-[14px] border-t border-[#dfdacd] pt-4 max-[640px]:flex-col max-[640px]:items-start">
-        <Link className="text-xs text-[#657067] hover:text-orange" href="/#books">← অন্য বই বেছে নিন</Link>
-        {!isLocked && (
-          <button className="inline-flex items-center gap-2 border-0 bg-transparent px-3 py-2 text-xs font-semibold text-green hover:text-orange" type="button" onClick={() => orderOnWhatsApp(book)}>
-            <WhatsAppIcon /> সম্পূর্ণ বই অর্ডার করুন · {formatPrice(book.price)}
-          </button>
-        )}
+      <section className="mx-auto mt-10 w-full max-w-[1000px]" aria-labelledby="suggested-books-heading">
+        <div className="mb-5 flex items-end justify-between gap-4 border-b border-[#dfdacd] pb-3 max-[640px]:items-start">
+          <div>
+            <span className="text-[11px] font-bold text-[#a45b40]">আরও পড়ুন</span>
+            <h2 className="mb-0 mt-1 font-serif text-xl font-semibold" id="suggested-books-heading">আপনার জন্য কিছু বই</h2>
+          </div>
+          <span className="text-[11px] text-muted">প্রতিবার আসলে নতুন বই দেখানো হয়</span>
+        </div>
+        <div className="grid grid-cols-3 gap-4 max-[640px]:grid-cols-1">
+          {suggestedBooks.map((suggestedBook) => (
+            <article className="flex items-center gap-3 border border-[#e5dfd1] bg-[#fffdf8] p-3" key={suggestedBook.id}>
+              <Link className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-green" href={`/read/${suggestedBook.id}`} aria-label={`${suggestedBook.title} নমুনা পড়ুন`}>
+                <img className="h-[92px] w-[66px] object-cover shadow-[2px_3px_8px_rgba(0,0,0,.15)]" src={withBasePath(suggestedBook.cover)} alt={`${suggestedBook.title} বইয়ের প্রচ্ছদ`} width="66" height="92" />
+              </Link>
+              <div className="min-w-0">
+                <span className="text-[10px] font-semibold text-[#a3684d]">{suggestedBook.category}</span>
+                <h3 className="mb-1 mt-1 font-serif text-sm font-semibold leading-[1.5]">{suggestedBook.title}</h3>
+                <p className="mb-2 text-[10px] text-muted">{suggestedBook.author}</p>
+                <Link className="inline-flex min-h-8 items-center rounded-sm border border-[#dcd7cb] bg-paper px-2.5 text-[11px] transition hover:border-green hover:text-green" href={`/read/${suggestedBook.id}`}>নমুনা পড়ুন →</Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <footer className="mx-auto mt-[23px] flex w-full max-w-[1000px] items-center justify-between gap-[14px] border-t border-[#dfdacd] pt-4 max-[640px]:flex-col max-[640px]:items-stretch">
+        <Link className="inline-flex min-h-10 w-fit items-center rounded-sm border border-[#dcd7cb] bg-paper px-3 text-xs text-[#657067] transition hover:border-green hover:text-green" href="/#books">← বইয়ের সংগ্রহে ফিরুন</Link>
+        <button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm bg-green px-4 text-xs font-semibold text-white transition hover:bg-[#243c30]" type="button" onClick={() => orderOnWhatsApp(book)}>
+          <WhatsAppIcon /> সম্পূর্ণ বই অর্ডার করুন · {formatPrice(book.price)}
+        </button>
       </footer>
     </main>
   );
