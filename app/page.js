@@ -173,7 +173,7 @@ export default function Home() {
             <small className="mt-[5px] text-[10px]">প্রকাশনী</small>
           </span>
         </a>
-        <nav className="flex gap-[30px] text-sm text-[#526055] max-[1000px]:gap-4 max-[760px]:hidden" aria-label="প্রধান নেভিগেশন">
+        <nav className="flex gap-[30px] text-sm font-normal text-[#526055] max-[1000px]:gap-4 max-[760px]:hidden" aria-label="প্রধান নেভিগেশন">
           <a className="transition-colors hover:text-orange" href="#books">বইসমূহ</a>
           <a className="transition-colors hover:text-orange" href="#publish">লেখকদের জন্য</a>
           <a className="transition-colors hover:text-orange" href="#about">আমাদের কথা</a>
@@ -442,7 +442,7 @@ export default function Home() {
             </a>
             <p className="mb-0 max-w-[175px] border-l border-[#ded7ca] pl-3 text-[11px] leading-[1.7] text-[#77766d] max-[640px]:max-w-[150px] max-[640px]:text-[10px]">বইয়ের পাতায় খুঁজে নিন আপনার পরের গল্প।</p>
           </div>
-          <nav className="flex flex-col items-start gap-2.5 text-xs text-[#626c61] max-[760px]:col-start-1 max-[760px]:row-start-2" aria-label="ফুটার নেভিগেশন">
+          <nav className="flex flex-col items-start gap-2.5 text-sm font-normal text-[#626c61] max-[760px]:col-start-1 max-[760px]:row-start-2" aria-label="ফুটার নেভিগেশন">
             <a className="transition-colors hover:text-orange" href="#books">বইয়ের সংগ্রহ</a>
             <a className="transition-colors hover:text-orange" href="#publish">লেখকদের জন্য</a>
             <a className="transition-colors hover:text-orange" href="#about">আমাদের কথা</a>
